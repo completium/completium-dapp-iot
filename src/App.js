@@ -39,7 +39,7 @@ function PageRouter () {
     <CssBaseline/>
     <HeaderBar appTitle={appTitle} handleConnect={handleConnect} istouch={isTouchDevice()}/>
     { (isTouchDevice())? (
-        <Bulb state={'on'} />
+        <Bulb state={'off'} />
       ) : (
         <Switch />
     )}
