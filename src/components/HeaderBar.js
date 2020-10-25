@@ -32,31 +32,37 @@ const HeaderBar = (props) => {
             </Typography>
           </Grid>
         </Grid>
-        { ready? (
+        { (props.istouch) ? (
             <div></div>
-          ): (wallet? (
-            <Button variant="contained" color="secondary"
-              disableElevation
-              size="small"
-              style={{ position: 'absolute', right: '1%' }}
-              onClick={props.handleConnect}>
-              connect to wallet
-            </Button>
-          ):(
-            <Link href="https://thanoswallet.com/" rel="noopener" underline="none" style={{
-              position: 'absolute',
-              right: '1%'
-            }}>
-              <Button variant="contained" size="small" disableElevation
-                style={{
-                  backgroundColor: '#ed8936',
-                  color: 'white',
-                  fontWeight: 'bold',
-                   }}>
-                Install Thanos
+          ) : (
+            (ready) ? (
+              <div></div>
+            ): (wallet ? (
+              <Button variant="contained" color="secondary"
+                disableElevation
+                size="small"
+                style={{ position: 'absolute', right: '1%' }}
+                onClick={props.handleConnect}>
+                connect to wallet
               </Button>
-            </Link>
-          ))}
+            ):(
+              <Link href="https://thanoswallet.com/" rel="noopener" underline="none" style={{
+                position: 'absolute',
+                right: '1%'
+              }}>
+                <Button variant="contained" size="small" disableElevation
+                  style={{
+                    backgroundColor: '#ed8936',
+                    color: 'white',
+                    fontWeight: 'bold',
+                     }}>
+                  Install Thanos
+                </Button>
+              </Link>
+            ))
+          )
+        }
+
       </Toolbar>
     </AppBar>
   )
