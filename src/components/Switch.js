@@ -69,7 +69,7 @@ const SwitchOn = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item style={{ marginBottom: 30, marginTop: 20 }}>
+      <Grid item style={{ marginBottom: 20, marginTop: 36 }}>
         <Button
           variant="contained"
           color="secondary"
@@ -172,27 +172,29 @@ const Charging = (props) => {
 
 const Busy = (props) => {
   return (
-    <Grid container
-      direction="row"
-      justify="center"
-      alignItems="center"
-      spacing={2}
-      style={{ padding: 12, paddingLeft: 20, marginTop: 0 }}>
-      <Grid item xs={12} style={{ textAlign: 'center' }}>
-        <Typography>Object has been switched on by:</Typography>
+    <Container style={{ height: 301 }}>
+      <Grid container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={2}
+        style={{ padding: 12, paddingLeft: 20, marginTop: 0 }}>
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
+          <Typography color="textSecondary">Object has been switched on by:</Typography>
+        </Grid>
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
+          <Typography style={{ fontFamily: 'Courier Prime, monospace' }}>
+            tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp
+          </Typography>
+        </Grid>
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
+          <Typography color="textSecondary">
+            Time remaining: 2 minutes 30 seconds
+          </Typography>
+        </Grid>
+        <Grid item></Grid>
       </Grid>
-      <Grid item xs={12} style={{ textAlign: 'center' }}>
-        <Typography style={{ fontFamily: 'Courier Prime, monospace' }}>
-          tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp
-        </Typography>
-      </Grid>
-      <Grid item xs={12} style={{ textAlign: 'center' }}>
-        <Typography>
-          Time remaining: 2 minutes 30 seconds
-        </Typography>
-      </Grid>
-      <Grid item></Grid>
-    </Grid>
+    </Container>
   )
 }
 
@@ -210,7 +212,7 @@ const Free = (props) => {
 
 const Switch = props => {
   const [qropen, setQROpen]     = React.useState(false);
-  const ready = true; /* TODO : read from wallet */
+  const ready = props.ready; /* TODO : read from wallet */
   const handleOpenQR = (event) => {
     setQROpen(true);
   }
@@ -248,7 +250,14 @@ const Switch = props => {
               <LocalOfferIcon />
             </Grid>
             <Grid item xs={11}>
-              <Typography>{props.switch.rate}ꜩ / minute</Typography>
+              <Grid container direction="row" spacing={1}>
+                <Grid item>
+                  <Typography>{props.switch.rate}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary"> XTZ / minute</Typography>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
           {/* _______________________________________________________ */}

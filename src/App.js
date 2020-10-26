@@ -17,6 +17,7 @@ function isTouchDevice () {
 }
 
 function PageRouter () {
+  const [ready, setReady] = React.useState(false);
   const [bcSwitch, setBCSwitch] = React.useState({
     dateofstop  : Date.now(),
     dateofstart : Date.now(),
@@ -47,7 +48,9 @@ function PageRouter () {
       }),
     [prefersDarkMode],
   );
-  const handleConnect = () => {};
+  const handleConnect = () => {
+    setReady(true);
+  };
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline/>
@@ -56,6 +59,7 @@ function PageRouter () {
         <Bulb state={'off'} switch={bcSwitch}/>
       ) : (
         <Switch
+          ready={ready}
           theme={theme}
           switch={bcSwitch}
           setBCSwitch={setBCSwitch}

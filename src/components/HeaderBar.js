@@ -10,8 +10,8 @@ import Grid from '@material-ui/core/Grid';
 /* import { useReady, useWallet } from '../dapp';
  */
 const HeaderBar = (props) => {
-  const ready = false; /* useReady(); */
-  const wallet = true; /* useWallet(); */
+  const ready = props.ready; /* TODO : useReady(); */
+  const wallet = true; /* TODO : useWallet(); */
   const minWidth = useMediaQuery('(min-width:600px)');
   var visible = minWidth?'visible':'hidden';
   return (
