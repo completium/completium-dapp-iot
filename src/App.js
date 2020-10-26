@@ -1,5 +1,5 @@
-import './App.css';
 import React from 'react';
+import './App.css';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { appTitle } from './settings.js';
 import HeaderBar from './components/HeaderBar';
@@ -17,6 +17,20 @@ function isTouchDevice () {
 }
 
 function PageRouter () {
+  const [bcSwitch, setBCSwitch] = React.useState({
+    dateofstop  : Date.now(),
+    dateofstart : Date.now(),
+    rate: 2.5,
+    user: 'tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp'
+  });
+  const handleInterrupt = (date) => {
+    setBCSwitch({
+      dateofstart: date,
+      dateofstop: date,
+      rate: bcSwitch.rate,
+      user: bcSwitch.user
+    });
+  }
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = React.useMemo(
     () =>
@@ -39,9 +53,14 @@ function PageRouter () {
     <CssBaseline/>
     <HeaderBar appTitle={appTitle} handleConnect={handleConnect} istouch={isTouchDevice()}/>
     { (isTouchDevice())? (
-        <Bulb state={'off'} />
+        <Bulb state={'off'} switch={bcSwitch}/>
       ) : (
-        <Switch theme={theme} />
+        <Switch
+          theme={theme}
+          switch={bcSwitch}
+          setBCSwitch={setBCSwitch}
+          handleInterrupt={handleInterrupt}
+        />
     )}
     </ThemeProvider>
     )

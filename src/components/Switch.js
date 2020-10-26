@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import Footer from './Footer';
 import Container from '@material-ui/core/Container';
 import { appName } from '../settings.js';
@@ -20,7 +20,19 @@ const getDurationLabel = (x,i) => {
 }
 
 const SwitchOn = (props) => {
-  console.log(props.duration);
+  const [duration, setDuration] = useState(0);
+  const handleStart = (event) => {
+    console.log(props.switch.rate);
+    props.setBCSwitch({
+      dateofstart: Date.now(),
+      dateofstop: Date.now() + duration * 60000,
+      rate: props.switch.rate,
+      user: props.switch.user
+    });
+  }
+  const handleDuration = (event) => {
+    setDuration(event.target.innerText)
+  }
   return (
     <Grid container
       direction="row"
@@ -40,17 +52,17 @@ const SwitchOn = (props) => {
           min={0}
           max={15}
           valueLabelDisplay='on'
-          color="secondary"
-          onChangeCommitted={props.handleDuration}
+          color='secondary'
+          onChangeCommitted={handleDuration}
         />
       </Grid>
       <Grid item xs={12} style={{ textAlign: 'center', marginTop: 0 }}>
-        <Typography color="textSecondary">Price for {getDurationLabel(props.duration)} minute(s):</Typography>
+        <Typography color="textSecondary">Price for {getDurationLabel(duration)} minute(s):</Typography>
       </Grid>
       <Grid item xs={12} style={{ textAlign: 'center' }}>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item>
-            <Typography variant='h6'>{props.price}</Typography>
+            <Typography variant='h6'>{ props.switch.rate * duration }</Typography>
           </Grid>
           <Grid item>
             <Typography color="textSecondary" style={{ marginLeft: 10}}>XTZ</Typography>
@@ -58,12 +70,58 @@ const SwitchOn = (props) => {
         </Grid>
       </Grid>
       <Grid item style={{ marginBottom: 30, marginTop: 20 }}>
-        <Button variant="contained" color="secondary" disableElevation>switch on</Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          disableElevation
+          onClick={handleStart}
+        >
+          switch on
+        </Button>
       </Grid>
     </Grid>)
 }
 
+const calculateTimeLeft = (difference) => {
+  let timeLeft = {};
+  if (difference > 0) {
+    timeLeft = {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60)
+    };
+  }
+  return timeLeft;
+}
+
 const Charging = (props) => {
+  const [timeLeft,setTimeLeft] = useState(calculateTimeLeft(props.dateofstop - Date.now()));
+  useEffect(() => {
+    const timer=setTimeout(() => {
+      setTimeLeft(calculateTimeLeft(props.dateofstop - Date.now()));
+    }, 1000);
+    // Clear timeout if the component is unmounted
+    return () => {
+      clearTimeout(timer);
+    }
+  });
+  const percentComplete = Math.floor(100 * (Date.now() - props.dateofstart) / (props.dateofstop - props.dateofstart));
+  const timerComponents = [];
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval]) {
+      return;
+    }
+    timerComponents.push(
+      <span>
+        {timeLeft[interval]} {interval}{" "}
+      </span>
+    );
+  })
+  if (timerComponents.length === 0) {
+    props.handleInterrupt();
+  }
+
   return (
     <Grid container
       direction="row"
@@ -83,16 +141,18 @@ const Charging = (props) => {
         <CircularProgress
           style={{ position: 'relative', left: '-50px' }}
           variant='static'
-          value='85'
+          value={percentComplete}
           size={100}
           thickness={5}
           color="secondary">
         </CircularProgress>
-        <Typography variant='h6' color='secondary' style={{ position: 'relative', top: '-70px', left: '5px' }}>80%</Typography>
+        <Typography variant='h6' color='secondary' style={{ position: 'relative', top: '-70px', left: '5px' }}>
+          {percentComplete}%
+        </Typography>
       </Grid>
       <Grid item xs={12} style={{ textAlign: 'center' }}>
         <Typography>
-          Time remaining: 2 minutes 30 seconds
+          Time remaining: {timerComponents.length ? timerComponents : <span>Time's up!</span>}
         </Typography>
       </Grid>
       <Grid item>
@@ -100,7 +160,9 @@ const Charging = (props) => {
           style={{ margin: 20 }}
           variant="outlined"
           color="inherit"
-          disableElevation>
+          disableElevation
+          onClick={props.handleInterrupt}
+        >
           interrupt
         </Button>
       </Grid>
@@ -147,20 +209,16 @@ const Free = (props) => {
 }
 
 const Switch = props => {
-  const [duration, setDuration] = React.useState('0');
-  const [charging, setCharging] = React.useState(true);
   const [qropen, setQROpen]     = React.useState(false);
-  const ready = false;
-  const PricePerMinute = 2.5;
-  const handleDuration = (event) => {
-    setDuration(event.target.innerText);
-  }
+  const ready = true; /* TODO : read from wallet */
   const handleOpenQR = (event) => {
     setQROpen(true);
   }
   const handleCloseQR = (event) => {
     setQROpen(false);
   }
+  const duration = props.switch.dateofstop - props.switch.dateofstart;
+  const charging = duration > 0;
   return (<div>
       <Container maxWidth="md" style={{
         backgroundImage : "url(" + process.env.PUBLIC_URL + '/wifiplug.svg)',
@@ -190,19 +248,23 @@ const Switch = props => {
               <LocalOfferIcon />
             </Grid>
             <Grid item xs={11}>
-              <Typography>{PricePerMinute}ꜩ / minute</Typography>
+              <Typography>{props.switch.rate}ꜩ / minute</Typography>
             </Grid>
           </Grid>
           {/* _______________________________________________________ */}
           <Divider></Divider>
           { (ready)? (
             (charging)? (
-              <Charging />
+              <Charging
+                dateofstart={props.switch.dateofstart}
+                dateofstop={props.switch.dateofstop}
+                handleInterrupt={props.handleInterrupt}
+              />
             ) : (
               <SwitchOn
-                handleDuration={handleDuration}
                 duration={duration}
-                price={duration * PricePerMinute}
+                switch={props.switch}
+                setBCSwitch={props.setBCSwitch}
               />
             )) : (
               <Busy />
