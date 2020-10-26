@@ -1,9 +1,9 @@
 archetype switch
 
-variable owner : address = @tz1XZ7s6uStC2hZVpPQhXgcdXPwxifByF3Ao
+variable owner : address = caller
 
-variable dateofstop   : date = 2020-06-18
-variable dateofstart  : date = 2020-06-18
+variable dateofstop   : date = now
+variable dateofstart  : date = now
 
 variable rate : rational = 1.2 // in time_unit / tez_unit
 
