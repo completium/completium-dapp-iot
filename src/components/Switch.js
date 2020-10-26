@@ -11,6 +11,7 @@ import { contractAddress } from '../settings';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import Slider from '@material-ui/core/Slider';
 import QRPopup from './QRPopup';
+import Account from './Account';
 
 const getDurationLabel = (x,i) => {
   var min = Math.floor(x);
@@ -198,6 +199,16 @@ const Busy = (props) => {
   )
 }
 
+const ConnectToWallet = (props) => {
+  return (
+    <Container style={{ height: 301 }}>
+      <Grid container direction="row" justify="center" alignItems="center" style={{ height: 301 }}>
+        <Typography color="textSecondary">Connect to Wallet to interact with object.</Typography>
+      </Grid>
+    </Container>
+  )
+}
+
 const Free = (props) => {
   return (
     <Grid container
@@ -219,6 +230,7 @@ const Switch = props => {
   const handleCloseQR = (event) => {
     setQROpen(false);
   }
+  const accountAddress = 'tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp';
   const duration = props.switch.dateofstop - props.switch.dateofstart;
   const charging = duration > 0;
   return (<div>
@@ -227,6 +239,7 @@ const Switch = props => {
         backgroundRepeat  : 'no-repeat',
         backgroundPosition: 'right 50% top 10%',
         height: 270}}>
+        { (ready)? (<Account account={accountAddress}/>):(<div />) }
       </Container>
       <Container maxWidth="sm" style={{ marginBottom: 150 }}>
         <Paper>
@@ -276,7 +289,7 @@ const Switch = props => {
                 setBCSwitch={props.setBCSwitch}
               />
             )) : (
-              <Busy />
+              <ConnectToWallet />
             )
           }
           {/* _______________________________________________________ */}
