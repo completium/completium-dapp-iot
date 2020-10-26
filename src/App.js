@@ -17,7 +17,7 @@ function isTouchDevice () {
 }
 
 function PageRouter () {
-  const prefersDarkMode = false; /* useMediaQuery('(prefers-color-scheme: dark)'); */
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = React.useMemo(
     () =>
       createMuiTheme({
