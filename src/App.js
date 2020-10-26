@@ -41,7 +41,7 @@ function PageRouter () {
     { (isTouchDevice())? (
         <Bulb state={'off'} />
       ) : (
-        <Switch />
+        <Switch darkMode={prefersDarkMode}/>
     )}
     </ThemeProvider>
     )

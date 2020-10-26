@@ -113,7 +113,7 @@ const Switch = props => {
               <Grid item xs={2}>
                 <Container style={{
                   height: 50,
-                  backgroundImage : "url(" + process.env.PUBLIC_URL + '/qrwhite.svg)',
+                  backgroundImage : "url(" + process.env.PUBLIC_URL + '/qr' + (props.darkMode?'white':'black') + '.svg)',
                   backgroundRepeat  : 'no-repeat',
                 }} />
               </Grid>
