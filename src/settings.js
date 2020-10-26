@@ -7,3 +7,5 @@ export const appTitle = "Switch on a Connected Object!"
 export const network = "carthagenet"
 
 export const appName = "IotCorp."
+
+export const objectURL = 'https://archetype-lang.org/'

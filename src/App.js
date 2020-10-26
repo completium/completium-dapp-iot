@@ -17,7 +17,7 @@ function isTouchDevice () {
 }
 
 function PageRouter () {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = false; /* useMediaQuery('(prefers-color-scheme: dark)'); */
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -41,7 +41,7 @@ function PageRouter () {
     { (isTouchDevice())? (
         <Bulb state={'off'} />
       ) : (
-        <Switch darkMode={prefersDarkMode}/>
+        <Switch theme={theme} />
     )}
     </ThemeProvider>
     )
