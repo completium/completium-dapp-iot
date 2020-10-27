@@ -1,4 +1,4 @@
-export const  contractAddress = "KT1HNsJScj3HfK831xqViGxWsbDbczdKPax4"
+export const  contractAddress = "KT1J5w67XjzNAo6PX3KQx6XyFApyQq4dC6GN"
 
 export const githubUrl = "https://github.com/edukera/completium-dapp-ideabox"
 

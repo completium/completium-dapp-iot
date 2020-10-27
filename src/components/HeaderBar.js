@@ -7,11 +7,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-/* import { useReady, useWallet } from '../dapp';
- */
+import { useReady, useWallet } from '../dapp';
+
 const HeaderBar = (props) => {
-  const ready = props.ready; /* TODO : useReady(); */
-  const wallet = true; /* TODO : useWallet(); */
+  const ready = useReady();
+  const wallet = useWallet();
   const minWidth = useMediaQuery('(min-width:600px)');
   var visible = minWidth?'visible':'hidden';
   return (
@@ -37,7 +37,7 @@ const HeaderBar = (props) => {
           ) : (
             (ready) ? (
               <div></div>
-            ): (wallet ? (
+            ) : (wallet ? (
               <Button variant="contained" color="secondary"
                 disableElevation
                 size="small"

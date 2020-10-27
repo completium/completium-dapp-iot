@@ -7,9 +7,20 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Bulb from './components/Bulb';
 import Switch from './components/Switch';
+import { Tezos } from '@taquito/taquito';
+import { contractAddress, appName, network } from './settings';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { DAppProvider, useReady, useConnect, useAccountPkh } from './dapp';
+import SnackMsg from './components/SnackMsg';
 
 function App() {
-  return <PageRouter />
+  return (
+    <DAppProvider appName={appName}>
+      <React.Suspense fallback={null}>
+        <PageRouter />
+      </React.Suspense>
+    </DAppProvider>
+  );
 }
 
 function isTouchDevice () {
@@ -17,21 +28,10 @@ function isTouchDevice () {
 }
 
 function PageRouter () {
-  const [ready, setReady] = React.useState(false);
-  const [bcSwitch, setBCSwitch] = React.useState({
-    dateofstop  : Date.now(),
-    dateofstart : Date.now(),
-    rate: 2.5,
-    user: 'tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp'
-  });
-  const handleInterrupt = (date) => {
-    setBCSwitch({
-      dateofstart: date,
-      dateofstop: date,
-      rate: bcSwitch.rate,
-      user: bcSwitch.user
-    });
-  }
+  var ready = useReady();
+  var connect = useConnect();
+  const [bcSwitch, setBCSwitch] = React.useState(null);
+  const [viewSnack, setViewSnack] = React.useState(false);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = React.useMemo(
     () =>
@@ -48,14 +48,49 @@ function PageRouter () {
       }),
     [prefersDarkMode],
   );
-  const handleConnect = () => {
-    setReady(true);
-  };
+  const handleConnect = React.useCallback(async () => {
+    try {
+      await connect(network);
+    } catch (err) {
+      alert(err.message);
+    };
+  }, [connect]);
+  async function loadSwitchContent () {
+    try {
+      Tezos.setProvider({rpc: 'https://testnet-tezos.giganode.io/'});
+      var contract  = await Tezos.contract.at(contractAddress);
+      var cstorage   = await contract.storage();
+      var dateofstart = new Date(cstorage.dateofstart);
+      var dateofstop = new Date(cstorage.dateofstop);
+      var rate = parseInt(0+cstorage.rate[3])/parseInt(0+cstorage.rate[4]);
+      var user = cstorage.user;
+      setBCSwitch({
+        dateofstart: dateofstart,
+        dateofstop : dateofstop,
+        rate: rate,
+        user: user,
+      });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  }
+  if (bcSwitch === null) {
+    loadSwitchContent();
+  }
+  const openSnack = () => {
+    setViewSnack(true);
+  }
+  const closeSnack = () => {
+    setViewSnack(false);
+  }
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline/>
     <HeaderBar appTitle={appTitle} handleConnect={handleConnect} istouch={isTouchDevice()}/>
-    { (isTouchDevice())? (
+    { (bcSwitch === null)? (
+        <LinearProgress color="secondary"></LinearProgress>
+      ) : (
+      (isTouchDevice())? (
         <Bulb state={'off'} switch={bcSwitch}/>
       ) : (
         <Switch
@@ -63,9 +98,11 @@ function PageRouter () {
           theme={theme}
           switch={bcSwitch}
           setBCSwitch={setBCSwitch}
-          handleInterrupt={handleInterrupt}
+          openSnack={openSnack}
+          closeSnack={closeSnack}
         />
-    )}
+    ))}
+    <SnackMsg open={viewSnack} theme={theme}/>
     </ThemeProvider>
     )
 }

@@ -12,6 +12,8 @@ import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import Slider from '@material-ui/core/Slider';
 import QRPopup from './QRPopup';
 import Account from './Account';
+import { useTezos, useReady, useConnect } from '../dapp';
+import { UnitValue } from '@taquito/taquito';
 
 const getDurationLabel = (x,i) => {
   var min = Math.floor(x);
@@ -21,14 +23,29 @@ const getDurationLabel = (x,i) => {
 }
 
 const SwitchOn = (props) => {
+  const tezos = useTezos();
   const [duration, setDuration] = useState(0);
+  const [disable, setDisable] = useState(false);
   const handleStart = (event) => {
-    console.log(props.switch.rate);
-    props.setBCSwitch({
-      dateofstart: Date.now(),
-      dateofstop: Date.now() + duration * 60000,
-      rate: props.switch.rate,
-      user: props.switch.user
+    tezos.wallet.at(contractAddress).then(contract => {
+      var price = (props.switch.rate * duration).toFixed(6);
+      console.log(`calling start with ${price} XTZ`);
+      contract.methods.start(UnitValue).send({ amount : price }).then( op => {
+        console.log(`waiting for ${op.opHash} to be confirmed`);
+        setDisable(true);
+        props.openSnack();
+        op.receipt().then(() => {
+          setDisable(false);
+          props.closeSnack();
+          props.resetBalance();
+          props.setBCSwitch({
+            dateofstart: Date.now(),
+            dateofstop: Date.now() + duration * 60000,
+            rate: props.switch.rate,
+            user: props.switch.user
+          });
+        });
+      })
     });
   }
   const handleDuration = (event) => {
@@ -55,6 +72,7 @@ const SwitchOn = (props) => {
           valueLabelDisplay='on'
           color='secondary'
           onChangeCommitted={handleDuration}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} style={{ textAlign: 'center', marginTop: 0 }}>
@@ -63,7 +81,7 @@ const SwitchOn = (props) => {
       <Grid item xs={12} style={{ textAlign: 'center' }}>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item>
-            <Typography variant='h6'>{ props.switch.rate * duration }</Typography>
+            <Typography variant='h6'>{ (props.switch.rate * duration).toFixed(2) }</Typography>
           </Grid>
           <Grid item>
             <Typography color="textSecondary" style={{ marginLeft: 10}}>XTZ</Typography>
@@ -76,6 +94,7 @@ const SwitchOn = (props) => {
           color="secondary"
           disableElevation
           onClick={handleStart}
+          disabled={disable}
         >
           switch on
         </Button>
@@ -97,7 +116,9 @@ const calculateTimeLeft = (difference) => {
 }
 
 const Charging = (props) => {
+  const tezos = useTezos();
   const [timeLeft,setTimeLeft] = useState(calculateTimeLeft(props.dateofstop - Date.now()));
+  const [disable, setDisable] = useState(false);
   useEffect(() => {
     const timer=setTimeout(() => {
       setTimeLeft(calculateTimeLeft(props.dateofstop - Date.now()));
@@ -119,8 +140,29 @@ const Charging = (props) => {
       </span>
     );
   })
+  const handleInterrupt = () => {
+    tezos.wallet.at(contractAddress).then(contract => {
+      contract.methods.interrupt(UnitValue).send().then( op => {
+        var d = Date.now();
+        console.log(`waiting for ${op.opHash} to be confirmed`);
+        setDisable(true);
+        props.openSnack();
+        op.receipt().then(() => {
+          setDisable(false);
+          props.closeSnack();
+          props.resetBalance();
+          props.setBCSwitch({
+            dateofstart: d,
+            dateofstop: d,
+            rate: props.switch.rate,
+            user: props.switch.user
+          });
+        });
+      })
+    });
+  }
   if (timerComponents.length === 0) {
-    props.handleInterrupt();
+    handleInterrupt();
   }
 
   return (
@@ -162,7 +204,8 @@ const Charging = (props) => {
           variant="outlined"
           color="inherit"
           disableElevation
-          onClick={props.handleInterrupt}
+          onClick={handleInterrupt}
+          disabled={disable}
         >
           interrupt
         </Button>
@@ -222,24 +265,28 @@ const Free = (props) => {
 }
 
 const Switch = props => {
-  const [qropen, setQROpen]     = React.useState(false);
-  const ready = props.ready; /* TODO : read from wallet */
+  const ready = useReady();
+  const [qropen, setQROpen]   = React.useState(false);
+  const [balance, setBalance] = React.useState(null);
+
   const handleOpenQR = (event) => {
     setQROpen(true);
   }
   const handleCloseQR = (event) => {
     setQROpen(false);
   }
-  const accountAddress = 'tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp';
+  const resetBalance = () => {
+    setBalance(null);
+  }
   const duration = props.switch.dateofstop - props.switch.dateofstart;
-  const charging = duration > 0;
+  const charging = (props.switch.dateofstop > Date.now()) && duration > 0;
   return (<div>
       <Container maxWidth="md" style={{
         backgroundImage : "url(" + process.env.PUBLIC_URL + '/wifiplug.svg)',
         backgroundRepeat  : 'no-repeat',
         backgroundPosition: 'right 50% top 10%',
         height: 270}}>
-        { (ready)? (<Account account={accountAddress}/>):(<div />) }
+        { (ready)? (<Account balance={balance} setBalance={setBalance}/>):(<div />) }
       </Container>
       <Container maxWidth="sm" style={{ marginBottom: 150 }}>
         <Paper>
@@ -280,13 +327,20 @@ const Switch = props => {
               <Charging
                 dateofstart={props.switch.dateofstart}
                 dateofstop={props.switch.dateofstop}
-                handleInterrupt={props.handleInterrupt}
+                switch={props.switch}
+                setBCSwitch={props.setBCSwitch}
+                openSnack={props.openSnack}
+                closeSnack={props.closeSnack}
+                resetBalance={resetBalance}
               />
             ) : (
               <SwitchOn
                 duration={duration}
                 switch={props.switch}
                 setBCSwitch={props.setBCSwitch}
+                openSnack={props.openSnack}
+                closeSnack={props.closeSnack}
+                resetBalance={resetBalance}
               />
             )) : (
               <ConnectToWallet />
