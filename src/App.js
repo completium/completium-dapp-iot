@@ -62,7 +62,7 @@ function PageRouter () {
       var cstorage   = await contract.storage();
       var dateofstart = new Date(cstorage.dateofstart);
       var dateofstop = new Date(cstorage.dateofstop);
-      var rate = parseInt(0+cstorage.rate[3])/parseInt(0+cstorage.rate[4]);
+      var rate = parseInt(0+cstorage.rate[4])/parseInt(0+cstorage.rate[3]);
       var user = cstorage.user;
       setBCSwitch({
         dateofstart: dateofstart,
@@ -97,6 +97,7 @@ function PageRouter () {
           ready={ready}
           theme={theme}
           switch={bcSwitch}
+          loadSwitchContent={loadSwitchContent}
           setBCSwitch={setBCSwitch}
           openSnack={openSnack}
           closeSnack={closeSnack}
