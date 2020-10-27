@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Footer from './Footer';
 import Container from '@material-ui/core/Container';
-import { appName } from '../settings.js';
+import { appName, objectURL } from '../settings.js';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Button, CardActionArea, CircularProgress, Divider, Typography } from '@material-ui/core';
@@ -30,7 +30,8 @@ const SwitchOn = (props) => {
     tezos.wallet.at(contractAddress).then(contract => {
       var price = (props.switch.rate * duration).toFixed(6);
       console.log(`calling start with ${price} XTZ`);
-      contract.methods.start(UnitValue).send({ amount : price }).then( op => {
+      contract.methods.start(UnitValue).send({ amount : price, fee : '0.1' }).then( op => {
+        var start = Date.now();
         console.log(`waiting for ${op.opHash} to be confirmed`);
         setDisable(true);
         props.openSnack();
@@ -39,8 +40,8 @@ const SwitchOn = (props) => {
           props.closeSnack();
           props.resetBalance();
           props.setBCSwitch({
-            dateofstart: Date.now(),
-            dateofstop: Date.now() + duration * 60000,
+            dateofstart: start,
+            dateofstop: start + duration * 60000,
             rate: props.switch.rate,
             user: props.switch.user
           });
@@ -162,7 +163,13 @@ const Charging = (props) => {
     });
   }
   if (timerComponents.length === 0) {
-    handleInterrupt();
+    var d = Date.now();
+    props.setBCSwitch({
+      dateofstart: d,
+      dateofstop: d,
+      rate: props.switch.rate,
+      user: props.switch.user
+    });
   }
 
   return (
@@ -396,7 +403,7 @@ const Switch = props => {
           </CardActionArea>
         </Paper>
       </Container>
-    <QRPopup url={"https://google.fr"} open={qropen} close={handleCloseQR} theme={props.theme}/>
+    <QRPopup url={objectURL} open={qropen} close={handleCloseQR} theme={props.theme}/>
     <Footer appName={appName}></Footer>
   </div>)
 }
