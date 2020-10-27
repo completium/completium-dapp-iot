@@ -30,7 +30,7 @@ const SwitchOn = (props) => {
     tezos.wallet.at(contractAddress).then(contract => {
       var price = (props.switch.rate * duration).toFixed(6);
       console.log(`calling start with ${price} XTZ`);
-      contract.methods.start(UnitValue).send({ amount : price, fee : '10' }).then( op => {
+      contract.methods.start(UnitValue).send({ amount : price, fee : '0.1' }).then( op => {
         var start = Date.now();
         console.log(`waiting for ${op.opHash} to be confirmed`);
         setDisable(true);
