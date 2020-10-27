@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
@@ -7,10 +6,20 @@ import DoneIcon from '@material-ui/icons/Check';
 import Grid from '@material-ui/core/Grid';
 
 const Bulb = (props) => {
+  const state = (props.switch.dateofstop > Date.now())?'on':'off';
+  React.useEffect(() => {
+    const timer=setTimeout(() => {
+      props.loadSwitchContent()
+    }, 3000);
+    // Clear timeout if the component is unmounted
+    return () => {
+      clearTimeout(timer);
+    }
+  });
   return (
     <Container maxWidth="md" style={{
         marginTop: 50,
-        backgroundImage : "url(" + process.env.PUBLIC_URL + '/bulb'+ props.state +'.svg)',
+        backgroundImage : "url(" + process.env.PUBLIC_URL + '/bulb'+ state +'.svg)',
         backgroundRepeat  : 'no-repeat',
         backgroundPosition: 'right 50% top 10%',
         height: 410}}>

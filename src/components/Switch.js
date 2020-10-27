@@ -12,7 +12,7 @@ import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import Slider from '@material-ui/core/Slider';
 import QRPopup from './QRPopup';
 import Account from './Account';
-import { useTezos, useReady, useConnect } from '../dapp';
+import { useTezos, useReady, useConnect, useAccountPkh } from '../dapp';
 import { UnitValue } from '@taquito/taquito';
 
 const getDurationLabel = (x,i) => {
@@ -215,6 +215,39 @@ const Charging = (props) => {
 }
 
 const Busy = (props) => {
+  const [timeLeft,setTimeLeft] = useState(calculateTimeLeft(props.dateofstop - Date.now()));
+  useEffect(() => {
+    const timer=setTimeout(() => {
+      setTimeLeft(calculateTimeLeft(props.dateofstop - Date.now()));
+    }, 1000);
+    // Clear timeout if the component is unmounted
+    return () => {
+      clearTimeout(timer);
+    }
+  });
+  const timerComponents = [];
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval]) {
+      return;
+    }
+    timerComponents.push(
+      <span>
+        {timeLeft[interval]} {interval}{" "}
+      </span>
+    );
+  })
+  const handleInterrupt = () => {
+    var d = Date.now();
+    props.setBCSwitch({
+      dateofstart: d,
+      dateofstop: d,
+      rate: props.switch.rate,
+      user: props.switch.user
+    });
+  }
+  if (timerComponents.length === 0) {
+    handleInterrupt();
+  }
   return (
     <Container style={{ height: 301 }}>
       <Grid container
@@ -228,12 +261,12 @@ const Busy = (props) => {
         </Grid>
         <Grid item xs={12} style={{ textAlign: 'center' }}>
           <Typography style={{ fontFamily: 'Courier Prime, monospace' }}>
-            tz1dZydwVDuz6SH5jCUfCQjqV8YCQimL9GCp
+            {props.user}
           </Typography>
         </Grid>
         <Grid item xs={12} style={{ textAlign: 'center' }}>
           <Typography color="textSecondary">
-            Time remaining: 2 minutes 30 seconds
+            Time remaining: {timerComponents.length ? timerComponents : <span>Time's up!</span>}
           </Typography>
         </Grid>
         <Grid item></Grid>
@@ -252,20 +285,9 @@ const ConnectToWallet = (props) => {
   )
 }
 
-const Free = (props) => {
-  return (
-    <Grid container
-      direction="row"
-      justify="center"
-      alignItems="center"
-      spacing={2}
-      style={{ padding: 12, paddingLeft: 20, marginTop: 0 }}>
-    </Grid>
-  )
-}
-
 const Switch = props => {
   const ready = useReady();
+  const accountAddress = useAccountPkh();
   const [qropen, setQROpen]   = React.useState(false);
   const [balance, setBalance] = React.useState(null);
 
@@ -323,26 +345,36 @@ const Switch = props => {
           {/* _______________________________________________________ */}
           <Divider></Divider>
           { (ready)? (
-            (charging)? (
-              <Charging
-                dateofstart={props.switch.dateofstart}
-                dateofstop={props.switch.dateofstop}
-                switch={props.switch}
-                setBCSwitch={props.setBCSwitch}
-                openSnack={props.openSnack}
-                closeSnack={props.closeSnack}
-                resetBalance={resetBalance}
-              />
+              (charging)? (
+                (accountAddress === props.switch.user) ? (
+                  <Charging
+                    dateofstart={props.switch.dateofstart}
+                    dateofstop={props.switch.dateofstop}
+                    switch={props.switch}
+                    setBCSwitch={props.setBCSwitch}
+                    openSnack={props.openSnack}
+                    closeSnack={props.closeSnack}
+                    resetBalance={resetBalance}
+                  />
+                ) : (
+                  <Busy
+                    user={props.switch.user}
+                    dateofstop={props.switch.dateofstop}
+                    switch={props.switch}
+                    setBCSwitch={props.setBCSwitch}
+                  />
+                )
+              ) : (
+                <SwitchOn
+                  duration={duration}
+                  switch={props.switch}
+                  setBCSwitch={props.setBCSwitch}
+                  openSnack={props.openSnack}
+                  closeSnack={props.closeSnack}
+                  resetBalance={resetBalance}
+                />
+              )
             ) : (
-              <SwitchOn
-                duration={duration}
-                switch={props.switch}
-                setBCSwitch={props.setBCSwitch}
-                openSnack={props.openSnack}
-                closeSnack={props.closeSnack}
-                resetBalance={resetBalance}
-              />
-            )) : (
               <ConnectToWallet />
             )
           }

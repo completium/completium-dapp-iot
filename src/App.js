@@ -91,7 +91,7 @@ function PageRouter () {
         <LinearProgress color="secondary"></LinearProgress>
       ) : (
       (isTouchDevice())? (
-        <Bulb state={'off'} switch={bcSwitch}/>
+        <Bulb loadSwitchContent={loadSwitchContent} switch={bcSwitch}/>
       ) : (
         <Switch
           ready={ready}
