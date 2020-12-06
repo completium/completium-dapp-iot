@@ -8,4 +8,4 @@ export const network = "carthagenet"
 
 export const appName = "IotCorp."
 
-export const objectURL = 'https://archetype-lang.org/'
+export const objectURL = 'http://edukera.github.io/completium-dapp-iot'

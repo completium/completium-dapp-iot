@@ -181,7 +181,7 @@ const Charging = (props) => {
           value='100'
           size={100}
           thickness={5}
-          color='inherit'>
+          color='primary'>
         </CircularProgress>
         <CircularProgress
           style={{ position: 'relative', left: '-50px' }}
@@ -279,7 +279,9 @@ const Busy = (props) => {
 
 const ConnectToWallet = (props) => {
   return (
-    <Container style={{ height: 301 }}>
+    <Container style={{ height: 301, backgroundImage : "url(" + process.env.PUBLIC_URL + '/wifiplug.svg)',
+        backgroundRepeat  : 'no-repeat',
+        backgroundPosition: 'right 50% top 50%', }}>
       <Grid container direction="row" justify="center" alignItems="center" style={{ height: 301 }}>
         <Typography color="textSecondary">Connect to Wallet to interact with object.</Typography>
       </Grid>
@@ -306,10 +308,7 @@ const Switch = props => {
   const charging = (props.switch.dateofstop > Date.now()) && duration > 0;
   return (<div>
       <Container maxWidth="md" style={{
-        backgroundImage : "url(" + process.env.PUBLIC_URL + '/wifiplug.svg)',
-        backgroundRepeat  : 'no-repeat',
-        backgroundPosition: 'right 50% top 10%',
-        height: 270}}>
+        height: 120}}>
         { (ready)? (<Account balance={balance} setBalance={setBalance}/>):(<div />) }
       </Container>
       <Container maxWidth="sm" style={{ marginBottom: 150 }}>

@@ -10,7 +10,7 @@ const Bulb = (props) => {
   React.useEffect(() => {
     const timer=setTimeout(() => {
       props.loadSwitchContent()
-    }, 3000);
+    }, 500);
     // Clear timeout if the component is unmounted
     return () => {
       clearTimeout(timer);

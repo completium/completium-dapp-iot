@@ -22,7 +22,7 @@ const Account = (props) => {
 
   return (
       <Container style={{ height: '300px'}}>
-        <Container style={{ height: '120px' }}></Container>
+        <Container style={{ height: '40px' }}></Container>
         <Paper style={{ opacity: 0.8, paddingLeft: 18, paddingRight: 28 }}>
           { (false) ? (
             <Grid container direction="row" alignItems="center" spacing={2} style={{ height: 64 }}>

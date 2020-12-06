@@ -14,8 +14,9 @@ const HeaderBar = (props) => {
   const wallet = useWallet();
   const minWidth = useMediaQuery('(min-width:600px)');
   var visible = minWidth?'visible':'hidden';
+  var dark = props.theme.palette.type === 'dark';
   return (
-    <AppBar position="static" color="default" style={{
+    <AppBar position="static" color={dark?"default":"secondary"} style={{
       boxShadow: "none",
       opacity: 1 }}>
       <Toolbar>
@@ -24,7 +25,7 @@ const HeaderBar = (props) => {
         </Typography>
         <Grid container justify="center" alignItems="center">
           <Grid item>
-            <Typography variant="h6" color="secondary" style={{
+            <Typography variant="h6" style={{
               visibility: visible,
               textAlign: 'center',
               }}>

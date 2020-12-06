@@ -32,12 +32,17 @@ function PageRouter () {
   var connect = useConnect();
   const [bcSwitch, setBCSwitch] = React.useState(null);
   const [viewSnack, setViewSnack] = React.useState(false);
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = false /*useMediaQuery('(prefers-color-scheme: dark)')*/;
   const theme = React.useMemo(
     () =>
       createMuiTheme({
         palette: {
           type: prefersDarkMode ? 'dark' : 'light',
+          primary: {
+            light: '#F5F5F5',
+            main: '#D3D3D3',
+            dark: '#A9A9A9'
+          },
           secondary: {
             light: '#81c784',
             main: '#4caf50',
@@ -86,7 +91,7 @@ function PageRouter () {
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline/>
-    <HeaderBar appTitle={appTitle} handleConnect={handleConnect} istouch={isTouchDevice()}/>
+    <HeaderBar theme={theme} appTitle={appTitle} handleConnect={handleConnect} istouch={isTouchDevice()}/>
     { (bcSwitch === null)? (
         <LinearProgress color="secondary"></LinearProgress>
       ) : (
