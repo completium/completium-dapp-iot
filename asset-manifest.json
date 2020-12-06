@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/completium-dapp-iot/static/css/main.89e155ff.chunk.css",
+    "main.js": "/completium-dapp-iot/static/js/main.41662ead.chunk.js",
+    "main.js.map": "/completium-dapp-iot/static/js/main.41662ead.chunk.js.map",
+    "runtime-main.js": "/completium-dapp-iot/static/js/runtime-main.717f379e.js",
+    "runtime-main.js.map": "/completium-dapp-iot/static/js/runtime-main.717f379e.js.map",
+    "static/js/2.3a8f1c18.chunk.js": "/completium-dapp-iot/static/js/2.3a8f1c18.chunk.js",
+    "static/js/2.3a8f1c18.chunk.js.map": "/completium-dapp-iot/static/js/2.3a8f1c18.chunk.js.map",
+    "static/js/3.50d83dac.chunk.js": "/completium-dapp-iot/static/js/3.50d83dac.chunk.js",
+    "static/js/3.50d83dac.chunk.js.map": "/completium-dapp-iot/static/js/3.50d83dac.chunk.js.map",
+    "index.html": "/completium-dapp-iot/index.html",
+    "static/css/main.89e155ff.chunk.css.map": "/completium-dapp-iot/static/css/main.89e155ff.chunk.css.map",
+    "static/js/2.3a8f1c18.chunk.js.LICENSE.txt": "/completium-dapp-iot/static/js/2.3a8f1c18.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.717f379e.js",
+    "static/js/2.3a8f1c18.chunk.js",
+    "static/css/main.89e155ff.chunk.css",
+    "static/js/main.41662ead.chunk.js"
+  ]
+}
