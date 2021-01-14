@@ -62,7 +62,7 @@ function PageRouter () {
   }, [connect]);
   async function loadSwitchContent () {
     try {
-      const Tezos = new TezosToolkit(nodeURL);
+      const Tezos = new TezosToolkit('https://delphinet-tezos.giganode.io');
       var contract  = await Tezos.contract.at(contractAddress);
       var cstorage   = await contract.storage();
       var dateofstart = new Date(cstorage.dateofstart);
