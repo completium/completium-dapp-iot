@@ -1,6 +1,6 @@
 archetype switch
 
-variable owner : address = caller
+variable owner : address = @tz1MZrh8CvYkp7BfLQMcm6mg5FvL5HRZfACw
 
 variable dateofstop   : date = now
 variable dateofstart  : date = now
