@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { appTitle } from './settings.js';
+import { appTitle, nodeURL } from './settings.js';
 import HeaderBar from './components/HeaderBar';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Bulb from './components/Bulb';
 import Switch from './components/Switch';
-import { Tezos } from '@taquito/taquito';
+import { TezosToolkit } from '@taquito/taquito';
 import { contractAddress, appName, network } from './settings';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { DAppProvider, useReady, useConnect, useAccountPkh } from './dapp';
@@ -62,7 +62,7 @@ function PageRouter () {
   }, [connect]);
   async function loadSwitchContent () {
     try {
-      Tezos.setProvider({rpc: 'https://testnet-tezos.giganode.io/'});
+      const Tezos = new TezosToolkit(nodeURL);
       var contract  = await Tezos.contract.at(contractAddress);
       var cstorage   = await contract.storage();
       var dateofstart = new Date(cstorage.dateofstart);
