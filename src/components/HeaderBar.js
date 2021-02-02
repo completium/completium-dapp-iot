@@ -4,14 +4,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import '../index.css';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { useReady, useWallet } from '../dapp';
+import WalletButton from './WalletButton';
+import Button from '@material-ui/core/Button';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 const HeaderBar = (props) => {
-  const ready = useReady();
-  const wallet = useWallet();
   const minWidth = useMediaQuery('(min-width:600px)');
   var visible = minWidth?'visible':'hidden';
   var dark = props.theme.palette.type === 'dark';
@@ -20,9 +18,11 @@ const HeaderBar = (props) => {
       boxShadow: "none",
       opacity: 1 }}>
       <Toolbar>
-        <Typography variant="h6" style={{ position: 'absolute', fontFamily : 'Alegreya Sans SC, sans-serif' }}>
-          Completium
-        </Typography>
+        <a href="https://edukera.github.io/completium-landing/index.html" target="_blank" style={{ color: 'white', height: '32px' }}>
+          <Typography variant="h6" style={{ position : 'absolute', fontFamily : 'Alegreya Sans SC, sans-serif' }}>
+            Completium
+          </Typography>
+        </a>
         <Grid container justify="center" alignItems="center">
           <Grid item>
             <Typography variant="h6" style={{
@@ -36,34 +36,14 @@ const HeaderBar = (props) => {
         { (props.istouch) ? (
             <div></div>
           ) : (
-            (ready) ? (
-              <div></div>
-            ) : (wallet ? (
-              <Button variant="contained" color="secondary"
-                disableElevation
-                size="small"
-                style={{ position: 'absolute', right: '1%' }}
-                onClick={props.handleConnect}>
-                connect to wallet
-              </Button>
-            ):(
-              <Link href="https://thanoswallet.com/" rel="noopener" underline="none" style={{
-                position: 'absolute',
-                right: '1%'
-              }}>
-                <Button variant="contained" size="small" disableElevation
-                  style={{
-                    backgroundColor: '#ed8936',
-                    color: 'white',
-                    fontWeight: 'bold',
-                     }}>
-                  Install Thanos
-                </Button>
-              </Link>
-            ))
+            <WalletButton />
           )
         }
-
+        <a href="https://edukera.github.io/completium-landing/docs/dapp-miles/miles-use-case1" target="_blank">
+          <Button style={{ color: 'white' }} component="span">
+            <HelpOutlineIcon/>
+          </Button>
+        </a>
       </Toolbar>
     </AppBar>
   )
