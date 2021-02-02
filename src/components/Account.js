@@ -7,13 +7,25 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { useAccountPkh, useTezos } from '../dapp';
 
 const Account = (props) => {
-  const address = useAccountPkh();
+  /////////////////////////////////////////////////////////////////////////////
+  // The 'account' variable retrieved from 'dapp.js' is the connected account
+  // address
+  /////////////////////////////////////////////////////////////////////////////
+  const account = useAccountPkh();
+
+  /////////////////////////////////////////////////////////////////////////////
+  // The 'tezos' variable retrieved from 'dapp.js' is used to interact with the
+  // blockchain
+  /////////////////////////////////////////////////////////////////////////////
   const tezos = useTezos();
 
   const loadBalance = React.useCallback(async () => {
-    const bal = await tezos.tz.getBalance(address);
-    props.setBalance(tezos.format('mutez', 'tz', bal).toString());
-  }, [tezos, address, props.setBalance]);
+    ///////////////////////////////////////////////////////////////////////////
+    // FIX ME
+    // RETRIEVE ACCOUNT BALANCE
+    // Method props.setBalance(string) is passed the account's balance
+    ///////////////////////////////////////////////////////////////////////////
+  }, [tezos, account, props.setBalance]);
 
   // Load initial
   if (props.balance === null) {
@@ -38,7 +50,7 @@ const Account = (props) => {
               <Grid item xs={4}>
                 <Typography style={{
                   fontFamily: 'Courier Prime, monospace',
-                }}>{address}</Typography>
+                }}>{account}</Typography>
               </Grid>
               {
                 <Grid item xs={6}>

@@ -27,22 +27,11 @@ const SwitchOn = (props) => {
   const [duration, setDuration] = useState(0);
   const [disable, setDisable] = useState(false);
   const handleStart = (event) => {
-    tezos.wallet.at(contractAddress).then(contract => {
-      var price = (props.switch.rate * duration).toFixed(6);
-      console.log(`calling start with ${price} XTZ`);
-      contract.methods.start(UnitValue).send({ amount : price, fee : '0.1' }).then( op => {
-        var start = Date.now();
-        console.log(`waiting for ${op.opHash} to be confirmed`);
-        setDisable(true);
-        props.openSnack();
-        op.receipt().then(() => {
-          setDisable(false);
-          props.closeSnack();
-          props.resetBalance();
-          props.loadSwitchContent();
-        });
-      })
-    });
+    ///////////////////////////////////////////////////////////////////////////
+    // FIX ME:
+    // Invode contract's 'start' entry point and provide the
+    // amount of tezos corresponding to the requested duration
+    ///////////////////////////////////////////////////////////////////////////
   }
   const handleDuration = (event) => {
     setDuration(event.target.innerText)
@@ -137,25 +126,10 @@ const Charging = (props) => {
     );
   })
   const handleInterrupt = () => {
-    tezos.wallet.at(contractAddress).then(contract => {
-      contract.methods.interrupt(UnitValue).send().then( op => {
-        var d = Date.now();
-        console.log(`waiting for ${op.opHash} to be confirmed`);
-        setDisable(true);
-        props.openSnack();
-        op.receipt().then(() => {
-          setDisable(false);
-          props.closeSnack();
-          props.resetBalance();
-          props.setBCSwitch({
-            dateofstart: d,
-            dateofstop: d,
-            rate: props.switch.rate,
-            user: props.switch.user
-          });
-        });
-      })
-    });
+    ///////////////////////////////////////////////////////////////////////////
+    // FIX ME:
+    // Invode contract's 'interrupt' entry point
+    ///////////////////////////////////////////////////////////////////////////
   }
   if (timerComponents.length === 0) {
     var d = Date.now();

@@ -15,11 +15,14 @@ import SnackMsg from './components/SnackMsg';
 
 function App() {
   return (
-    <DAppProvider appName={appName}>
-      <React.Suspense fallback={null}>
-        <PageRouter />
-      </React.Suspense>
-    </DAppProvider>
+    ///////////////////////////////////////////////////////////////////////////
+    // FIX ME
+    // Wrap the App's body with <DAppProvider> tag/function in order to benefit
+    // from wallet's service as defined in dapp.js
+    ///////////////////////////////////////////////////////////////////////////
+    <React.Suspense fallback={null}>
+      <PageRouter />
+    </React.Suspense>
   );
 }
 
@@ -62,19 +65,14 @@ function PageRouter () {
   }, [connect]);
   async function loadSwitchContent () {
     try {
-      const Tezos = new TezosToolkit('https://delphinet-tezos.giganode.io');
-      var contract  = await Tezos.contract.at(contractAddress);
-      var cstorage   = await contract.storage();
-      var dateofstart = new Date(cstorage.dateofstart);
-      var dateofstop = new Date(cstorage.dateofstop);
-      var rate = parseInt(0+cstorage.rate[4])/parseInt(0+cstorage.rate[3]);
-      var user = cstorage.user;
-      setBCSwitch({
-        dateofstart: dateofstart,
-        dateofstop : dateofstop,
-        rate: rate,
-        user: user,
-      });
+      ///////////////////////////////////////////////////////////////////////////
+      // FIX ME:
+      // Read contract storage:
+      // * rate
+      // * date of start
+      // * date of stop
+      // * user
+      ///////////////////////////////////////////////////////////////////////////
     } catch (error) {
       console.log(`Error: ${error}`);
     }
