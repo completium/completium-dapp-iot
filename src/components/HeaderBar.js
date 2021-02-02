@@ -36,10 +36,10 @@ const HeaderBar = (props) => {
         { (props.istouch) ? (
             <div></div>
           ) : (
-            <WalletButton />
+            <WalletButton handleConnect={props.handleConnect}/>
           )
         }
-        <a href="https://edukera.github.io/completium-landing/docs/dapp-miles/miles-use-case1" target="_blank">
+        <a href="https://edukera.github.io/completium-landing/docs/iot-miles/prerequisites" target="_blank">
           <Button style={{ color: 'white' }} component="span">
             <HelpOutlineIcon/>
           </Button>
