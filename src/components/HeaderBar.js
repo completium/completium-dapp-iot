@@ -39,7 +39,7 @@ const HeaderBar = (props) => {
             <WalletButton handleConnect={props.handleConnect}/>
           )
         }
-        <a href="https://edukera.github.io/completium-landing/docs/dapp-miles/presentation" target="_blank">
+        <a href="https://edukera.github.io/completium-landing/docs/dapp-iot/presentation" target="_blank">
           <Button style={{ color: 'white' }} component="span">
             <HelpOutlineIcon/>
           </Button>
