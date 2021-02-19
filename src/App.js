@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { appTitle, nodeURL } from './settings.js';
+import { appTitle, endpoint } from './settings.js';
 import HeaderBar from './components/HeaderBar';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -62,7 +62,7 @@ function PageRouter () {
   }, [connect]);
   async function loadSwitchContent () {
     try {
-      const Tezos = new TezosToolkit('https://delphinet-tezos.giganode.io');
+      const Tezos = new TezosToolkit(endpoint);
       var contract  = await Tezos.contract.at(contractAddress);
       var cstorage   = await contract.storage();
       var dateofstart = new Date(cstorage.dateofstart);
