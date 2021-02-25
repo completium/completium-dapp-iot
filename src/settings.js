@@ -1,13 +1,12 @@
-export const contractAddress = "KT1CxHBiCSvmXn9kXCbhPfdGDAggGG9ktQEX"
+export const contractAddress = "KT19ZQUnVrDT5xnfvPqYhn1DeM489875oWGU"
 
 export const githubUrl = "https://github.com/edukera/completium-dapp-ideabox"
 
 export const appTitle = "Switch on a Connected Object!"
 
-export const network = "delphinet"
+export const network  = "edo2net"
+export const endpoint = 'https://edonet-tezos.giganode.io/'
 
 export const appName = "IotCorp."
 
 export const objectURL = 'http://edukera.github.io/completium-dapp-iot'
-
-export const nodeURL = 'https://delphinet-tezos.giganode.io'
