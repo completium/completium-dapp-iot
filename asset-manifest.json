@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/completium-dapp-iot/static/css/main.89e155ff.chunk.css",
-    "main.js": "/completium-dapp-iot/static/js/main.6572ac21.chunk.js",
-    "main.js.map": "/completium-dapp-iot/static/js/main.6572ac21.chunk.js.map",
+    "main.js": "/completium-dapp-iot/static/js/main.50f4b143.chunk.js",
+    "main.js.map": "/completium-dapp-iot/static/js/main.50f4b143.chunk.js.map",
     "runtime-main.js": "/completium-dapp-iot/static/js/runtime-main.87608bc5.js",
     "runtime-main.js.map": "/completium-dapp-iot/static/js/runtime-main.87608bc5.js.map",
     "static/js/2.37e71c74.chunk.js": "/completium-dapp-iot/static/js/2.37e71c74.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.87608bc5.js",
     "static/js/2.37e71c74.chunk.js",
     "static/css/main.89e155ff.chunk.css",
-    "static/js/main.6572ac21.chunk.js"
+    "static/js/main.50f4b143.chunk.js"
   ]
 }
