@@ -17,9 +17,9 @@ const WalletButton = (props) => {
             connect to wallet
           </Button>
         ):(
-          <Link href="https://thanoswallet.com/" rel="noopener" underline="none" style={{
+          <Link href="https://templewallet.com/" rel="noopener" underline="none" style={{
             position: 'absolute',
-            right: '1%'
+            right: '90px'
           }}>
             <Button variant="contained" size="small" disableElevation
               style={{
@@ -27,7 +27,7 @@ const WalletButton = (props) => {
                 color: 'white',
                 fontWeight: 'bold',
                 }}>
-              Install Thanos
+              Install Temple
             </Button>
           </Link>
       )));
