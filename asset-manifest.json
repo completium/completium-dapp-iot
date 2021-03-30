@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/completium-dapp-iot/static/css/main.89e155ff.chunk.css",
-    "main.js": "/completium-dapp-iot/static/js/main.60fa02c8.chunk.js",
-    "main.js.map": "/completium-dapp-iot/static/js/main.60fa02c8.chunk.js.map",
+    "main.css": "/completium-dapp-iot/static/css/main.996a9528.chunk.css",
+    "main.js": "/completium-dapp-iot/static/js/main.5dbe7541.chunk.js",
+    "main.js.map": "/completium-dapp-iot/static/js/main.5dbe7541.chunk.js.map",
     "runtime-main.js": "/completium-dapp-iot/static/js/runtime-main.87608bc5.js",
     "runtime-main.js.map": "/completium-dapp-iot/static/js/runtime-main.87608bc5.js.map",
-    "static/js/2.85ac7409.chunk.js": "/completium-dapp-iot/static/js/2.85ac7409.chunk.js",
-    "static/js/2.85ac7409.chunk.js.map": "/completium-dapp-iot/static/js/2.85ac7409.chunk.js.map",
+    "static/js/2.398f468a.chunk.js": "/completium-dapp-iot/static/js/2.398f468a.chunk.js",
+    "static/js/2.398f468a.chunk.js.map": "/completium-dapp-iot/static/js/2.398f468a.chunk.js.map",
     "static/js/3.69927fcd.chunk.js": "/completium-dapp-iot/static/js/3.69927fcd.chunk.js",
     "static/js/3.69927fcd.chunk.js.map": "/completium-dapp-iot/static/js/3.69927fcd.chunk.js.map",
     "index.html": "/completium-dapp-iot/index.html",
-    "static/css/main.89e155ff.chunk.css.map": "/completium-dapp-iot/static/css/main.89e155ff.chunk.css.map",
-    "static/js/2.85ac7409.chunk.js.LICENSE.txt": "/completium-dapp-iot/static/js/2.85ac7409.chunk.js.LICENSE.txt"
+    "static/css/main.996a9528.chunk.css.map": "/completium-dapp-iot/static/css/main.996a9528.chunk.css.map",
+    "static/js/2.398f468a.chunk.js.LICENSE.txt": "/completium-dapp-iot/static/js/2.398f468a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.87608bc5.js",
-    "static/js/2.85ac7409.chunk.js",
-    "static/css/main.89e155ff.chunk.css",
-    "static/js/main.60fa02c8.chunk.js"
+    "static/js/2.398f468a.chunk.js",
+    "static/css/main.996a9528.chunk.css",
+    "static/js/main.5dbe7541.chunk.js"
   ]
 }
