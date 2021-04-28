@@ -1,7 +1,7 @@
 FROM gitpod/workspace-full:latest
 LABEL maintainer="contact@edukera.com"
 RUN sudo apt-get update && sudo apt-get -y install wget netbase
-RUN npm i @completium/completium-cli@0.1.13 -g
+RUN npm i @completium/completium-cli@0.1.14 -g
 RUN wget -q https://raw.githubusercontent.com/edukera/completium-dapp-utils/master/admin.json
 RUN completium-cli init
 RUN completium-cli install bin archetype
